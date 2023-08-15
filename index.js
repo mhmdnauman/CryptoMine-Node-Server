@@ -2,10 +2,52 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const PORT = 3000;
-const stripe = require('stripe')('sk_test_51NWcItEb0h9mTy06U7yxZveIAL2bJngqvfGaLmJWydsWV36LdfhqFHOH854Jl1tsj5gSQap7S0qblqauKbEgPnvU00901ohZDr');
+const stripe = require('stripe')('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');
+const nodemailer = require('nodemailer');
+
 
 app.use(express.json())
 app.use(cors());
+
+const emailTransporter = nodemailer.createTransport({
+  service: 'Gmail', // Use your email service
+  auth: {
+    user: 'cryptomine.app@gmail.com', // Your email address
+    pass: 'wxuxjqvrmpeorlyw', // Your email password or an app-specific password
+  },
+});
+
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+app.post('/send-otp', (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  const otp = generateOTP();
+
+  const mailOptions = {
+    from: 'cryptomine.app@gmail.com', // Sender email address
+    to: email,
+    subject: 'Account Recovery OTP',
+    text: `Your OTP for account recovery is: ${otp}`,
+  };
+
+  emailTransporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ error: 'An error occurred while sending the email' });
+    }
+
+    console.log('Email sent:', info.response);
+    return res.json({ OTP: otp });
+  });
+});
+
 
 app.post('/payment-sheet', async (req, res) => {
     
@@ -56,7 +98,7 @@ app.post('/payment-sheet', async (req, res) => {
     paymentIntent: paymentIntent.client_secret,
     ephemeralKey: ephemeralKey.secret,
     customer: customer.id,
-    publishableKey: 'pk_test_51NWcItEb0h9mTy06LrQLmSB2WFVduj5j5XdeBZ5rZl83MLOhx4cml1p4Ycn8a4N1EOSKMeHEWt9udV8uqomUV4M8008YuM4dM1',
+    publishableKey: 'pk_live_51NfNW0KJOfFiDXilSGHUdsWMNIaqrjuLBMj3IrpSDxNvFcWNzYCrsZlxjEX3LBUlGq6dVa1ZdWIOy6SnPxJ1xZ2S00tw53JJ3V',
     amount: amount
   });
 
