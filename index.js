@@ -70,16 +70,16 @@ app.post('/payment-sheet', async (req, res) => {
   //99 means 0.99 USD, 199 means 1.99 USD and all of them like that
 
   if(req.body.package==1){
-    amount= 12;
+    amount= 50;
   }
   else if(req.body.package==2){
-    amount= 14;
+    amount= 99;
   }
   else if(req.body.package==3){
-    amount= 36;
+    amount= 129;
   }
   else if(req.body.package==4){
-    amount= 55;
+    amount= 199;
   }
 
   //generates ephemeralKey
