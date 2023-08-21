@@ -12,8 +12,8 @@ app.use(cors());
 const emailTransporter = nodemailer.createTransport({
   service: 'Gmail', // Use your email service
   auth: {
-    user: 'cryptomine.app@gmail.com', // Your email address
-    pass: 'wxuxjqvrmpeorlyw', // Your email password or an app-specific password
+    user: 'support@cryptomineapp.co', // Your email address
+    pass: 'Admin1234', // Your email password or an app-specific password
   },
 });
 
@@ -31,12 +31,12 @@ app.post('/send-otp', (req, res) => {
   const otp = generateOTP();
 
   const mailOptions = {
-    from: 'cryptomine.app@gmail.com', // Sender email address
+    from: 'support@cryptomineapp.co', // Sender email address
     to: email,
     subject: 'Your One-Time Password (OTP) for Account Recovery',
     text: `We have received your request for account recovery for your account against this email ${email}. To ensure the security of your account, we have generated a one-time password (OTP) for you to verify your identity.${'\n'}Your OTP for accessing your account is: ${otp} ${'\n'} Please enter this OTP on the recovery page to proceed with the account recovery process. Please do not share this OTP with anyone, as it is a confidential code meant for your use only. ${'\n'}
 
-    If you did not initiate this account recovery request, please contact our support team immediately at cryptomine.app@gmail.com.
+    If you did not initiate this account recovery request, please contact our support team immediately at support@cryptomineapp.co.
     
     ${'\n'}Thank you for choosing CryptoMine. We are here to assist you in every way possible.${'\n'}
     ${'\n'}
@@ -44,7 +44,7 @@ app.post('/send-otp', (req, res) => {
     The CryptoMine Support Team
     ${'\n'}
     ${'\n'}
-    Note: This is an automated email. If you need further assistance, please contact our support team at cryptomine.app@gmail.com.`,
+    Note: This is an automated email. If you need further assistance, please contact our support team at support@cryptomineapp.co.`,
   };
 
   emailTransporter.sendMail(mailOptions, (error, info) => {
